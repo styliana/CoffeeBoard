@@ -1,6 +1,6 @@
 <div class="container py-5">
   <div class="text-center mb-5">
-    <h1 class="coffee-title display-4 fw-bold">TeamBoard Coffee ☕</h1>
+    <h1 class="coffee-title display-4 fw-bold">CoffeeBoard ☕</h1>
   </div>
 
   <div *ngIf="!currentUser" class="card coffee-card mb-4 p-4 text-center shadow-sm">
@@ -21,7 +21,7 @@
 
   <div *ngIf="currentUser" class="card coffee-card mb-5 p-4 shadow-sm">
     <div class="d-flex justify-content-between mb-3">
-      <h4 class="coffee-text fw-bold">Witaj, {{ currentUser }}!</h4>
+      <h4 class="coffee-text fw-bold">{{ welcomeMessage }}</h4>
       <button (click)="logout()" class="btn btn-sm btn-outline-danger">Wyloguj</button>
     </div>
     <div class="row g-3">
@@ -67,4 +67,10 @@
       </div>
     </div>
   </div>
+  <footer class="mt-5 pt-4 border-top text-center text-muted" *ngIf="systemInfo">
+    <small>
+      System <strong>CoffeeBoard</strong> stworzony przez: {{ systemInfo.autor }}<br>
+      Technologia: {{ systemInfo.framework }} | Wersja: {{ systemInfo.wersja }}
+    </small>
+  </footer>
 </div>

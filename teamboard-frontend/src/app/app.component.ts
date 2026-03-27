@@ -18,11 +18,23 @@ export class App implements OnInit {
 
   constructor(private adService: AdService) {}
 
+  systemInfo: any = null;
+  welcomeMessage: string = '';
   ngOnInit() {
+    this.adService.getSystemInfo().subscribe({
+      next: (data) => this.systemInfo = data,
+      error: (err) => console.error('Błąd pobierania info', err)
+    });
+
     const storedUser = localStorage.getItem('coffee_user');
     if (storedUser) {
       this.currentUser = storedUser;
       this.loadAds();
+
+      // POBIERAMY POWITANIE Z BACKENDU:
+      this.adService.getPersonalizedGreeting(this.currentUser).subscribe(
+        res => this.welcomeMessage = res
+      );
     }
   }
 
@@ -89,17 +101,19 @@ export class App implements OnInit {
   setIdentity(name: string, pass: string) {
     const authString = 'Basic ' + btoa(`${name}:${pass}`);
 
-    // Kluczowa zmiana: Pytamy serwer czy dane są dobre PRZED ustawieniem użytkownika
     this.adService.getAdsWithAuth(authString).subscribe({
       next: (data: any[]) => {
-        // Serwer autoryzował zapytanie, wpuszczamy użytkownika
         localStorage.setItem('coffee_auth', authString);
         localStorage.setItem('coffee_user', name);
         this.currentUser = name;
         this.ads = data.map(ad => ({ ...ad, participantNames: ad.participantNames || [] }));
+
+        // POBIERAMY POWITANIE Z BACKENDU PO ZALOGOWANIU:
+        this.adService.getPersonalizedGreeting(this.currentUser).subscribe(
+          res => this.welcomeMessage = res
+        );
       },
       error: (err) => {
-        // Serwer odrzucił logowanie
         alert('Zły login lub hasło!');
         this.logout();
       }

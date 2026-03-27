@@ -46,4 +46,13 @@ export class AdService {
   register(user: any): Observable<any> {
     return this.http.post('http://localhost:8080/api/register', user);
   }
+
+  getSystemInfo(): Observable<any> {
+    return this.http.get('http://localhost:8080/info');
+  }
+
+  getPersonalizedGreeting(name: string): Observable<string> {
+    // Zwracamy czysty tekst z backendu
+    return this.http.get(`http://localhost:8080/hello/${name}`, { responseType: 'text' });
+  }
 }

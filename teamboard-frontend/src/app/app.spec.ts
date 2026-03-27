@@ -24,7 +24,7 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges(); // Wymusza odświeżenie widoku
     const compiled = fixture.nativeElement as HTMLElement;
-    // Zmieniono tekst na 'TeamBoard Coffee', bo taki masz w pliku app.html
-    expect(compiled.querySelector('h1')?.textContent).toContain('TeamBoard Coffee');
+    // Zmieniono tekst na 'CoffeeBoard', bo taki masz w pliku app.html
+    expect(compiled.querySelector('h1')?.textContent).toContain('CoffeeBoard');
   });
 });
